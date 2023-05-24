@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "Smartsheet_RPA"
+version = "0.1.0"
+description = ""
+authors = ["Gabriel Tavares <gabriel.tavares@syngenta.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = {extras = ["dotenv"], version = "^1.10.8"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
