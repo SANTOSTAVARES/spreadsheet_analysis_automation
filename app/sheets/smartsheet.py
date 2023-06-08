@@ -38,7 +38,7 @@ class Smartsheet:
         else:
             return df
 
-class Data_Frame:
+class DataTable:
     def __init__(self, data_table: DataFrame) -> None:
         self.data_table = data_table
     
