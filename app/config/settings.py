@@ -5,6 +5,7 @@ import os
 class Settings(BaseSettings):
 
     SMARTSHEET_TOKEN: Union[str, None]
+    DATABASE_URL: str
     DB_USER: str
     POSTGRES_PASSWORD: str
     DB_HOST: str
