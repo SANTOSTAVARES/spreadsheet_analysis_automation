@@ -7,8 +7,8 @@ class Task(Base):
     __tablename__ = 'tasks'
 
     task_id: int = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
-    task_status: bool = sa.Column(sa.Boolean, nullable=False)
-    sheet_id: int = sa.Column(sa.ForeignKey("sheets.sheet_id"))
+    task_status: bool = sa.Column(sa.Boolean, nullable=False, index=True)
+    sheet_id: int = sa.Column(sa.ForeignKey("sheets.sheet_id"), index=True)
     task_type: str = sa.Column(sa.String, nullable=False)
     main_column: str = sa.Column(sa.String, nullable=False)
     auxiliary_column: str = sa.Column(sa.String, nullable=False)
@@ -20,7 +20,7 @@ class TaskRuntime(Base):
 
     tasks_runtime_id: int = sa.Column(
         sa.Integer, primary_key=True, autoincrement=True)
-    runtime: time = sa.Column(sa.Time, nullable=False)
+    runtime: time = sa.Column(sa.Time, nullable=False, index=True)
     task_id: int = sa.Column(sa.ForeignKey("tasks.task_id"))
 
 
