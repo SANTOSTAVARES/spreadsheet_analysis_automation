@@ -10,4 +10,4 @@ def convert_list_of_lists_to_csv(data_list: list, filename: str, path_to_save: s
 
 def convert_csv_to_dataframe(path_and_file_name: str) -> DataFrame:
     
-    return read_csv(path_and_file_name)
+    return read_csv(filepath_or_buffer=path_and_file_name, header=0)
