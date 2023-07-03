@@ -1,12 +1,12 @@
 import pytest
 from app.models.user import User
-from ...app.config.settings import session
-from ...app.services.deal_with_csv import convert_csv_to_dataframe, convert_list_of_lists_to_csv
+from app.config.database import session
+from app.services.deal_with_csv import convert_csv_to_dataframe, convert_list_of_lists_to_csv
 
 @pytest.fixture()
 def insert_users_into_db_by_csv_file():
 
-    users_to_create_csv = [  ['name', 'email', 'user_type']
+    users_to_create_csv = [  ['name', 'email', 'user_type'],
                     ['joao', 'joao@company.com', 'admin'],
                     ['maria', 'maria@company.com', 'operacional'],
                     ['ana', 'ana@company.com', 'operacional']
