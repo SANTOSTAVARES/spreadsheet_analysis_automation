@@ -7,10 +7,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-pydantic = {extras = ["dotenv"], version = "^1.10.8"}
 sqlalchemy = "^2.0.16"
-alembic = "^1.11.1"
 psycopg2 = "^2.9.6"
+alembic = "^1.11.1"
+pydantic-settings = "^2.0.1"
 
 
 [build-system]
