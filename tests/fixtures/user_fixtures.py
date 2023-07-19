@@ -1,27 +1,27 @@
 import pytest
-from app.models.user import User
-from app.config.database import session
-from app.services.deal_with_csv import convert_csv_to_dataframe, convert_list_of_lists_to_csv
+from app.services.deal_with_csv import convert_list_of_lists_to_csv, delete_file_from_directory
+
 
 @pytest.fixture()
-def insert_users_into_db_by_csv_file():
+def create_csv_users_file():
 
-    users_to_create_csv = [  ['name', 'email', 'user_type'],
-                    ['joao', 'joao@company.com', 'admin'],
-                    ['maria', 'maria@company.com', 'operacional'],
-                    ['ana', 'ana@company.com', 'operacional']
-                  ]
+    users_to_create_csv = [['name', 'email', 'user_type'],
+                           ['joao', 'joao@company.com', 'admin'],
+                           ['maria', 'maria@company.com', 'operacional'],
+                           ['ana', 'ana@company.com', 'operacional']
+                           ]
+    file_name = 'users'
+    csv_file_path = '.\\data_to_input'
 
-    convert_list_of_lists_to_csv(data_list=users_to_create_csv, filename='users', path_to_save='..\..\data_to_input')
-    users_from_dataframe = convert_csv_to_dataframe(path_and_file_name='C:\\Users\\s1203595\OneDrive - Syngenta\Documents\\aplicacoes_e_codigos\\smartsheet\\app\\teste.csv')
+    convert_list_of_lists_to_csv(data_list=users_to_create_csv, file_name=file_name,
+                                 path_to_save=csv_file_path)
 
-    users_list = []
-    for i in users_from_dataframe.iterrows():
-        users_list.append(User(name=i[1][0], email=i[1][1], user_type=i[1][2]))
-    
-    session.add_all(users_list)
+    yield users_to_create_csv
 
-    yield users_list
+    delete_file_from_directory(
+        file_name=f'{file_name}.csv', path=f'{csv_file_path}\\')
 
-    session.flush()
-    session.close()
+
+@pytest.fixture()
+def insert_users_into_db(create_csv_users_file):
+    pass
