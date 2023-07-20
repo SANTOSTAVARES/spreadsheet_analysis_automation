@@ -1,6 +1,8 @@
 import pytest
-from app.services.deal_with_csv import convert_list_of_lists_to_text_file, delete_file_from_directory, convert_csv_to_dataframe
+from app.services.deal_with_csv import convert_list_of_lists_to_text_file, delete_file_from_directory
 from pandas import read_csv
+from app.models.user import User
+from app.config.database import session
 
 
 @pytest.fixture()
@@ -28,4 +30,14 @@ def insert_users_into_db(create_csv_users_file):
     create_csv_users_file
     file_name = 'users.csv'
     csv_file_path = '.\\data_to_input\\'
-    read_csv(filepath_or_buffer=f'{csv_file_path}{file_name}', header=0)
+    df = read_csv(filepath_or_buffer=f'{csv_file_path}{file_name}', header=0)
+
+    yield df
+
+    users_list = []
+    for i in df.iterrows():
+        users_list.append(User(name=i[1][0], email=i[1][1], user_type=i[1][2]))
+
+    session.add_all(users_list)
+    session.flush()
+    session.close()
