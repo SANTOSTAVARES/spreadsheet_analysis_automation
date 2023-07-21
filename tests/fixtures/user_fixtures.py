@@ -32,12 +32,13 @@ def insert_users_into_db(create_csv_users_file):
     csv_file_path = '.\\data_to_input\\'
     df = read_csv(filepath_or_buffer=f'{csv_file_path}{file_name}', header=0)
 
-    yield df
-
     users_list = []
     for i in df.iterrows():
         users_list.append(User(name=i[1][0], email=i[1][1], user_type=i[1][2]))
 
     session.add_all(users_list)
+
+    yield df
+
     session.flush()
     session.close()
