@@ -1,8 +1,10 @@
 import sqlalchemy as sa
 from ..config.database import Base
 from datetime import time
+from dataclasses import dataclass
 
 
+@dataclass
 class Task(Base):
     __tablename__ = 'tasks'
 
