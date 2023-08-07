@@ -7,6 +7,7 @@ def test_get_user_by_email(insert_users_into_db):
     user_email = df['email'].loc[df.index[0]]
     first_user_in_db = get_user_by_email(email=user_email)
 
+    # Check if there is available in db.
     assert user_email == first_user_in_db.email
 
 
