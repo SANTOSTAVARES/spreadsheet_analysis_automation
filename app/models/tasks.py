@@ -17,6 +17,7 @@ class Task(Base):
     reference_values: str = sa.Column(sa.String, nullable=False)
 
 
+@dataclass
 class TaskRuntime(Base):
     __tablename__ = 'tasks_runtime'
 
@@ -24,9 +25,10 @@ class TaskRuntime(Base):
         sa.Integer, primary_key=True, autoincrement=True)
     runtime: time = sa.Column(sa.Time, nullable=False, index=True)
     task_id: int = sa.Column(sa.ForeignKey(
-        "tasks.task_id", ondelete="CASCADE"))
+        "tasks.task_id", ondelete="CASCADE"), nullable=False)
 
 
+@dataclass
 class AchievedTask(Base):
     __tablename__ = 'achieved_tasks'
 
@@ -35,9 +37,10 @@ class AchievedTask(Base):
     created_at = sa.Column(sa.TIMESTAMP(
         timezone=True), server_default=sa.sql.func.now())
     task_id: int = sa.Column(sa.ForeignKey(
-        "tasks.task_id", ondelete="CASCADE"))
+        "tasks.task_id", ondelete="CASCADE"), nullable=False)
 
 
+@dataclass
 class TaskWeekday(Base):
     __tablename__ = 'tasksweekdays'
 
@@ -51,4 +54,4 @@ class TaskWeekday(Base):
     friday: bool = sa.Column(sa.Boolean)
     saturday: bool = sa.Column(sa.Boolean)
     task_id: int = sa.Column(sa.ForeignKey(
-        "tasks.task_id", ondelete="CASCADE"))
+        "tasks.task_id", ondelete="CASCADE"), nullable=False)

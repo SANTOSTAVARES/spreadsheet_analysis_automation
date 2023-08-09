@@ -16,6 +16,6 @@ class UserSheet(Base):
     users_sheets_id: int = sa.Column(
         sa.Integer, primary_key=True, autoincrement=True)
     user_id: int = sa.Column(sa.ForeignKey(
-        "users.user_id", ondelete="CASCADE"), index=True)
+        "users.user_id", ondelete="CASCADE"), index=True, nullable=False)
     sheet_id: int = sa.Column(sa.ForeignKey(
-        "sheets.sheet_id", ondelete="CASCADE"), index=True)
+        "sheets.sheet_id", ondelete="CASCADE"), index=True, nullable=False)

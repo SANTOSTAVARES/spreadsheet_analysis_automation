@@ -63,10 +63,10 @@ def insert_task_with_true_status_into_db(insert_into_users_sheets_table):
 
 
 @pytest.fixture()
-def insert_task_weekdays_into_db():
-    task_id = insert_task_with_true_status_into_db.task_id
+def insert_task_weekdays_into_db(insert_task_with_true_status_into_db):
+    task = insert_task_with_true_status_into_db
     task_weekdays = TaskWeekday(sunday=True, monday=True, tuesday=True, wednesday=True,
-                                thursday=True, friday=True, saturday=True, task_id=task_id)
+                                thursday=True, friday=True, saturday=True, task_id=task.task_id)
     session.add(task_weekdays)
 
     yield task_weekdays
