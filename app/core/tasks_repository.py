@@ -17,6 +17,5 @@ def get_first_task_in_db() -> Task:
 
 def get_true_taskweekdays_by_day():
     with session as s:
-        stmt = s.execute(select(TaskWeekday, Task).where(
-            TaskWeekday.friday == True))
-        return stmt.scalar()
+        stmt = s.execute(select(TaskWeekday))
+        return stmt.scalars()
