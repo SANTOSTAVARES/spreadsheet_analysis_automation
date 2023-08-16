@@ -17,6 +17,14 @@ def insert_tasks_with_both_status_into_db(insert_into_users_sheets_table):
             "reference_values": "Values",
         },
         {
+            "task_status": True,
+            "sheet_id": user_sheet.sheet_id,
+            "task_type": "Type 99",
+            "main_column": "Column 1",
+            "auxiliary_column": "Column 2",
+            "reference_values": "Values",
+        },
+        {
             "task_status": False,
             "sheet_id": user_sheet.sheet_id,
             "task_type": "Type 2",
@@ -46,27 +54,10 @@ def insert_tasks_with_both_status_into_db(insert_into_users_sheets_table):
 
 
 @pytest.fixture()
-def insert_task_with_true_status_into_db(insert_into_users_sheets_table):
-    user_sheet = insert_into_users_sheets_table
-    task = Task(task_status=True,
-                sheet_id=user_sheet.sheet_id,
-                task_type="Type 1",
-                main_column="First Column",
-                auxiliary_column="Second Column",
-                reference_values="values")
-    session.add(task)
-
-    yield task
-
-    session.flush()
-    session.close()
-
-
-@pytest.fixture()
-def insert_task_weekdays_into_db(insert_task_with_true_status_into_db):
-    task = insert_task_with_true_status_into_db
+def insert_task_weekdays_into_db(insert_tasks_with_both_status_into_db):
+    task_id = insert_tasks_with_both_status_into_db[0].task_id
     task_weekdays = TaskWeekday(sunday=True, monday=True, tuesday=True, wednesday=True,
-                                thursday=True, friday=True, saturday=True, task_id=task.task_id)
+                                thursday=True, friday=True, saturday=True, task_id=task_id)
     session.add(task_weekdays)
 
     yield task_weekdays
