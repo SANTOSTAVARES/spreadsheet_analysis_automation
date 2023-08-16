@@ -15,6 +15,12 @@ def get_first_task_in_db() -> Task:
         return stmt.scalar()
 
 
+def get_tasks_with_true_status_in_db():
+    with session as s:
+        stmt = s.execute(select(Task).where(Task.task_status == True))
+        return stmt.fetchall()
+
+
 def get_true_taskweekdays_by_day():
     with session as s:
         stmt = s.execute(select(TaskWeekday))
