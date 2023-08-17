@@ -1,3 +1,4 @@
+from datetime import datetime
 from app.models.tasks import Task, TaskWeekday
 from app.config.database import session
 from sqlalchemy import select
@@ -21,7 +22,9 @@ def get_tasks_with_true_status_in_db():
         return stmt.fetchall()
 
 
-def get_true_taskweekdays_by_day():
+def get_taskweekday_by_current_day():
+    current_day = datetime.now().strftime('%A').lower()
     with session as s:
-        stmt = s.execute(select(TaskWeekday))
-        return stmt.scalars()
+        stmt = s.execute(select(TaskWeekday).where(
+            f'TaskWeekday.{current_day}' == True))
+        return stmt.fetchall()
