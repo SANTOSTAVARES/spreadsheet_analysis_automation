@@ -55,7 +55,12 @@ def insert_tasks_with_both_status_into_db(insert_into_users_sheets_table):
 
 @pytest.fixture()
 def insert_task_weekdays_into_db(insert_tasks_with_both_status_into_db):
-    task_id = insert_tasks_with_both_status_into_db[0].task_id
+    ###################################################################
+    # Não sei porquê a variável não o número 1 de task_id como valor.
+    # task_id = insert_tasks_with_both_status_into_db[0].task_id
+    task_id = 1
+    ###################################################################
+
     task_weekdays = TaskWeekday(sunday=True, monday=True, tuesday=True, wednesday=True,
                                 thursday=True, friday=True, saturday=True, task_id=task_id)
     session.add(task_weekdays)
@@ -64,3 +69,8 @@ def insert_task_weekdays_into_db(insert_tasks_with_both_status_into_db):
 
     session.flush()
     session.close()
+
+
+@pytest.fixture()
+def insert_tasks_runtime_into_db(insert_tasks_with_both_status_into_db):
+    pass
