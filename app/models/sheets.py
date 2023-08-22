@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import sqlalchemy as sa
 from ..config.database import Base
 
@@ -10,6 +11,7 @@ class Sheet(Base):
         sa.String, nullable=False, index=True, unique=True)
 
 
+@dataclass
 class UserSheet(Base):
     __tablename__ = 'users_sheets'
 

@@ -1,6 +1,6 @@
 import pytest
 from app.config.database import session
-from app.models.tasks import Task, TaskWeekday
+from app.models.tasks import Task, TaskWeekday, AchievedTask
 from .sheets_fixtures import insert_into_users_sheets_table
 
 
@@ -72,5 +72,11 @@ def insert_task_weekdays_into_db(insert_tasks_with_both_status_into_db):
 
 
 @pytest.fixture()
-def insert_tasks_runtime_into_db(insert_tasks_with_both_status_into_db):
-    pass
+def insert_achievied_task_into_db(insert_tasks_with_both_status_into_db):
+    tasks = insert_tasks_with_both_status_into_db
+    at = AchievedTask(achievied_tasks_id=1, task_id=1)
+    session.add(at)
+    yield at
+    # breakpoint()
+    session.flush()
+    session.close()
