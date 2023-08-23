@@ -1,5 +1,5 @@
 from datetime import datetime
-from ..fixtures.tasks_fixtures import insert_tasks_with_both_status_into_db, insert_task_weekdays_into_db, insert_achievied_task_into_db
+from ..fixtures.tasks_fixtures import insert_tasks_with_both_status_into_db, insert_task_weekdays_into_db, insert_achieved_task_into_db
 from ..fixtures.sheets_fixtures import insert_into_users_sheets_table, insert_sheet_into_db
 from ..fixtures.user_fixtures import insert_users_into_db, create_csv_users_file
 from app.core.tasks_repository import get_first_task_in_db, get_tasks_with_true_status_in_db, get_taskweekday_by_current_day, get_achieved_tasks_by_task_id
@@ -33,9 +33,10 @@ def test_get_taskweekday_by_current_day(insert_task_weekdays_into_db):
         0][0].task_weekday_id
 
 
-def test_get_achieved_tasks_by_task_id(insert_achievied_task_into_db):
-    inserted_achievied_task = insert_achievied_task_into_db
+def test_get_achieved_tasks_by_task_id(insert_achieved_task_into_db):
+    inserted_achieved_task = insert_achieved_task_into_db
     ################################################################
     # Task_id está mockado.
     gotten_achieved_tasks = get_achieved_tasks_by_task_id(task_id=1)
-    assert inserted_achievied_task.task_id == gotten_achieved_tasks[0][0].task_id
+    assert inserted_achieved_task.task_id == gotten_achieved_tasks[0][0].task_id
+    breakpoint()

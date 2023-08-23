@@ -72,11 +72,11 @@ def insert_task_weekdays_into_db(insert_tasks_with_both_status_into_db):
 
 
 @pytest.fixture()
-def insert_achievied_task_into_db(insert_tasks_with_both_status_into_db):
+def insert_achieved_task_into_db(insert_tasks_with_both_status_into_db):
     tasks = insert_tasks_with_both_status_into_db
     ################################################################
     # Task_id está mockado.
-    at = AchievedTask(achievied_tasks_id=1, task_id=1)
+    at = AchievedTask(achieved_tasks_id=1, task_id=1)
     session.add(at)
     yield at
 

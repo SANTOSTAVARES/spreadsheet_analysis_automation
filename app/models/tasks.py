@@ -32,10 +32,11 @@ class TaskRuntime(Base):
 class AchievedTask(Base):
     __tablename__ = 'achieved_tasks'
 
-    achievied_tasks_id: int = sa.Column(
+    achieved_tasks_id: int = sa.Column(
         sa.Integer, primary_key=True, autoincrement=True)
-    created_at = sa.Column(sa.TIMESTAMP(
-        timezone=True), server_default=sa.sql.func.now())
+    # created_at = sa.Column(sa.TIMESTAMP(
+    #    timezone=True), server_default=sa.sql.func.now())
+    created_at = sa.Column(sa.TIMESTAMP, default=sa.func.now())
     task_id: int = sa.Column(sa.ForeignKey(
         "tasks.task_id", ondelete="CASCADE"), nullable=False)
 
