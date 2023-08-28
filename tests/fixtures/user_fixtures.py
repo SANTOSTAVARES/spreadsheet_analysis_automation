@@ -42,3 +42,15 @@ def insert_users_into_db(create_csv_users_file):
 
     session.flush()
     session.close()
+
+
+@pytest.fixture()
+def insert_user_into_db():
+    user = User(name="Jose", email="Jose@email.com", user_type="gerente")
+    session.add(user)
+    session.commit()
+
+    yield user
+
+    session.rollback()
+    session.close()
