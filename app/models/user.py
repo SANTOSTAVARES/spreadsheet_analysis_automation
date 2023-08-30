@@ -1,7 +1,9 @@
 import sqlalchemy as sa
 from ..config.database import Base
+from dataclasses import dataclass
 
 
+@dataclass
 class User(Base):
     __tablename__ = 'users'
 
