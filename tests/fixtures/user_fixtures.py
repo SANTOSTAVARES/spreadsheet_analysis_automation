@@ -39,7 +39,7 @@ def insert_users_into_db(create_csv_users_file):
     session.add_all(users_list)
     session.commit()
 
-    yield df
+    yield users_list
 
     for user in users_list:
         session.delete(user)
