@@ -1,5 +1,5 @@
 from ..fixtures.user_fixtures import insert_users_into_db, create_csv_users_file
-from app.core.users_repository import get_all_users, get_user_by_email
+from app.queries.users_repository import get_all_users, get_user_by_email
 
 
 def test_get_user_by_email(insert_users_into_db):
