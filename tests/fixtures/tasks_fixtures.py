@@ -1,16 +1,16 @@
 import pytest
 from app.config.database import session
 from app.models.tasks import Task, TaskWeekday, AchievedTask
-from .sheets_fixtures import insert_into_users_sheets_table
+from tests.fixtures.sheets_fixtures import insert_sheet_into_db
 
 
 @pytest.fixture()
-def insert_tasks_with_both_status_into_db(insert_into_users_sheets_table):
-    user_sheet = insert_into_users_sheets_table
+def insert_tasks_with_both_status_into_db(insert_sheet_into_db):
+    sheet_id = insert_sheet_into_db.sheet_id
     tasks_to_insert_in_db = [
         {
             "task_status": True,
-            "sheet_id": user_sheet.sheet_id,
+            "sheet_id": sheet_id,
             "task_type": "Type 1",
             "main_column": "Column 1",
             "auxiliary_column": "Column 2",
@@ -18,7 +18,7 @@ def insert_tasks_with_both_status_into_db(insert_into_users_sheets_table):
         },
         {
             "task_status": True,
-            "sheet_id": user_sheet.sheet_id,
+            "sheet_id": sheet_id,
             "task_type": "Type 99",
             "main_column": "Column 1",
             "auxiliary_column": "Column 2",
@@ -26,7 +26,7 @@ def insert_tasks_with_both_status_into_db(insert_into_users_sheets_table):
         },
         {
             "task_status": False,
-            "sheet_id": user_sheet.sheet_id,
+            "sheet_id": sheet_id,
             "task_type": "Type 2",
             "main_column": "Column 3",
             "auxiliary_column": "Column 4",
@@ -46,39 +46,48 @@ def insert_tasks_with_both_status_into_db(insert_into_users_sheets_table):
         )
         tasks_list.append(task)
     session.add_all(tasks_list)
+    session.commit()
 
     yield tasks_list
 
-    session.flush()
+    for task in tasks_list:
+        session.delete(task)
+
+    session.commit()
     session.close()
 
 
 @pytest.fixture()
 def insert_task_weekdays_into_db(insert_tasks_with_both_status_into_db):
-    ###################################################################
-    # Não sei porquê a variável não o número 1 de task_id como valor.
-    # task_id = insert_tasks_with_both_status_into_db[0].task_id
-    task_id = 1
-    ###################################################################
+    tasks = insert_tasks_with_both_status_into_db
+    tasks_weekdays = []
 
-    task_weekdays = TaskWeekday(sunday=True, monday=True, tuesday=True, wednesday=True,
-                                thursday=True, friday=True, saturday=True, task_id=task_id)
-    session.add(task_weekdays)
+    for task in tasks:
+        task_id = task.task_id
+        tasks_weekdays.append(TaskWeekday(sunday=True, monday=True, tuesday=True,
+                                          wednesday=True, thursday=True, friday=True, saturday=True, task_id=task_id))
+    session.add_all(tasks_weekdays)
+    session.commit()
 
-    yield task_weekdays
+    yield tasks_weekdays
 
-    session.flush()
+    for task in tasks_weekdays:
+        session.delete(task)
+
+    session.commit()
     session.close()
 
 
 @pytest.fixture()
 def insert_achieved_task_into_db(insert_tasks_with_both_status_into_db):
-    tasks = insert_tasks_with_both_status_into_db
-    ################################################################
-    # Task_id está mockado.
-    at = AchievedTask(achieved_tasks_id=1, task_id=1)
+
+    task_id = insert_tasks_with_both_status_into_db[0].task_id
+    at = AchievedTask(task_id=task_id)
     session.add(at)
+    session.commit()
+
     yield at
 
-    session.flush()
+    session.delete(at)
+    session.commit()
     session.close()
