@@ -1,5 +1,5 @@
 from app.services.routine import attribute_from_taksweekday_about_current_day
-from app.models.tasks import Task, TaskWeekday, AchievedTask
+from app.models.tasks import Task, TaskWeekday, AchievedTask, UserTask
 from app.config.database import session
 from sqlalchemy import select
 
@@ -39,4 +39,11 @@ def get_achieved_tasks_by_task_id(task_id: int):
     with session as s:
         stmt = s.execute(select(AchievedTask).where(
             AchievedTask.task_id == task_id))
+        return stmt.fetchall()
+
+
+def get_users_tasks_by_task_id(task_id: int):
+    with session as s:
+        stmt = s.execute(select(UserTask).where(
+            UserTask.task_id == task_id))
         return stmt.fetchall()
