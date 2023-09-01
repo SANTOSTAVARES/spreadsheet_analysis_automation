@@ -1,7 +1,8 @@
 import pytest
 from app.config.database import session
-from app.models.tasks import Task, TaskWeekday, AchievedTask
+from app.models.tasks import Task, TaskWeekday, AchievedTask, UserTask
 from tests.fixtures.sheets_fixtures import insert_sheet_into_db
+from tests.fixtures.user_fixtures import insert_users_into_db
 
 
 @pytest.fixture()
@@ -89,5 +90,26 @@ def insert_achieved_task_into_db(insert_tasks_with_both_status_into_db):
     yield at
 
     session.delete(at)
+    session.commit()
+    session.close()
+
+
+@pytest.fixture()
+def insert_users_tasks_into_db(insert_tasks_with_both_status_into_db, insert_users_into_db):
+    tasks_in_db = insert_tasks_with_both_status_into_db
+    users_in_db = insert_users_into_db
+    users_tasks = []
+
+    for user in users_in_db:
+        for task in tasks_in_db:
+            users_tasks.append(
+                UserTask(user_id=user.user_id, task_id=task.task_id))
+
+    session.add_all(users_tasks)
+    session.commit()
+
+    yield users_tasks
+
+    session.delete(users_tasks)
     session.commit()
     session.close()
