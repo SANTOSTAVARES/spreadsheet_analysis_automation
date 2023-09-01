@@ -22,9 +22,9 @@ class Task(Base):
 class UserTask(Base):
     __tablename__ = 'users_tasks'
 
-    user_id = sa.Column(sa.ForeignKey(
+    user_id: int = sa.Column(sa.ForeignKey(
         "users.user_id", ondelete="CASCADE"), primary_key=True)
-    task_id = sa.Column(sa.ForeignKey(
+    task_id: int = sa.Column(sa.ForeignKey(
         "tasks.task_id", ondelete="CASCADE"), primary_key=True)
 
 
