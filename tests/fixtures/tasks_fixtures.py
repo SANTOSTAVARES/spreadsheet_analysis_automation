@@ -110,6 +110,7 @@ def insert_users_tasks_into_db(insert_tasks_with_both_status_into_db, insert_use
 
     yield users_tasks
 
-    session.delete(users_tasks)
+    for ut in users_tasks:
+        session.delete(ut)
     session.commit()
     session.close()
