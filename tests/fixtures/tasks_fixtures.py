@@ -1,6 +1,7 @@
+from datetime import datetime, timedelta
 import pytest
 from app.config.database import session
-from app.models.tasks import Task, TaskWeekday, AchievedTask, UserTask
+from app.models.tasks import Task, TaskWeekday, AchievedTask, UserTask, TaskRuntime
 from tests.fixtures.sheets_fixtures import insert_sheet_into_db
 from tests.fixtures.user_fixtures import insert_users_into_db
 
@@ -48,7 +49,7 @@ def insert_tasks_with_both_status_into_db(insert_sheet_into_db):
         tasks_list.append(task)
     session.add_all(tasks_list)
     session.commit()
-
+    # breakpoint()
     yield tasks_list
 
     for task in tasks_list:
@@ -112,5 +113,33 @@ def insert_users_tasks_into_db(insert_tasks_with_both_status_into_db, insert_use
 
     for ut in users_tasks:
         session.delete(ut)
+    session.commit()
+    session.close()
+
+
+@pytest.fixture()
+def insert_task_runtime_into_db(insert_tasks_with_both_status_into_db):
+    task_id = insert_tasks_with_both_status_into_db[0].task_id
+    time_now = datetime.now()
+    time_one_hour_ago = time_now - timedelta(hours=1)
+    time_after_one_hour = time_now + timedelta(hours=1)
+
+    tasks_runtime = [
+        {"runtime": time_one_hour_ago, "task_id": task_id},
+        {"runtime": time_after_one_hour, "task_id": task_id},
+    ]
+    tasks_runtime_list = []
+    for tr in tasks_runtime:
+        task_runtime = TaskRuntime(
+            runtime=tr["runtime"], task_id=tr["task_id"])
+        tasks_runtime_list.append(task_runtime)
+
+    session.add_all(tasks_runtime_list)
+    session.commit()
+
+    yield tasks_runtime_list
+
+    for t_k in tasks_runtime_list:
+        session.delete(t_k)
     session.commit()
     session.close()
