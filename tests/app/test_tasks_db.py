@@ -48,3 +48,13 @@ def test_get_task_runtime_by_task_id(insert_tasks_runtime_into_db):
 
     # Check if there is task_runtime in db.
     assert tasks_runtime[0].task_id == gotten_tasks_runtime_from_db[0][0].task_id
+
+
+def test_get_achieved_tasks_by_task_runtime_id(insert_achieved_task_into_db):
+    achieved_task = insert_achieved_task_into_db
+    gotten_achieved_task_from_db = get_achieved_task_by_tasks_runtime_id(
+        tasks_runtime_id=achieved_task.tasks_runtime_id)
+
+    # Check if there is achieved_task in db.
+    assert achieved_task.tasks_runtime_id == gotten_achieved_task_from_db[
+        0][0].tasks_runtime_id
