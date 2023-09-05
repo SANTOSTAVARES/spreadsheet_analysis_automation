@@ -41,3 +41,10 @@ def get_tasks_runtime_by_task_id(task_id: int):
         stmt = s.execute(select(TaskRuntime).where(
             TaskRuntime.task_id == task_id))
         return stmt.fetchall()
+
+
+def get_achieved_task_by_tasks_runtime_id(tasks_runtime_id: int):
+    with session as s:
+        stmt = s.execute(select(AchievedTask).where(
+            AchievedTask.tasks_runtime_id == tasks_runtime_id))
+        return stmt.fetchall()
