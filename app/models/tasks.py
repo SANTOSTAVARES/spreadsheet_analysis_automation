@@ -45,9 +45,9 @@ class AchievedTask(Base):
 
     achieved_tasks_id: int = sa.Column(
         sa.Integer, primary_key=True, autoincrement=True)
-    created_at = sa.Column(sa.DateTime, default=sa.func.now(), nullable=False)
-    task_id: int = sa.Column(sa.ForeignKey(
-        "tasks.task_id", ondelete="CASCADE"), nullable=False)
+    created_at = sa.Column(sa.Date, default=sa.func.now(), nullable=False)
+    tasks_runtime_id: int = sa.Column(sa.ForeignKey(
+        "tasks_runtime.tasks_runtime_id", ondelete="CASCADE"), nullable=False)
 
 
 @dataclass
