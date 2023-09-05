@@ -29,12 +29,6 @@ def get_taskweekday_by_current_day():
         return stmt.fetchall()
 
 
-def get_first_achieved_task_in_db():
-    with session as s:
-        stmt = s.execute(select(AchievedTask))
-        return stmt.scalar()
-
-
 def get_achieved_tasks_by_task_id(task_id: int):
     with session as s:
         stmt = s.execute(select(AchievedTask).where(
