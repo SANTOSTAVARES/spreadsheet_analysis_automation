@@ -128,3 +128,18 @@ def insert_tasks_runtime_into_db(insert_tasks_with_both_status_into_db):
         session.delete(t_k)
     session.commit()
     session.close()
+
+
+@pytest.fixture()
+def insert_achieved_task_into_db(insert_tasks_runtime_into_db):
+    tasks_runtime = insert_tasks_runtime_into_db
+    achieved_task = AchievedTask(
+        tasks_runtime_id=tasks_runtime[0].tasks_runtime_id)
+    session.add(achieved_task)
+    session.commit()
+
+    yield achieved_task
+
+    session.delete(achieved_task)
+    session.commit()
+    session.close()
