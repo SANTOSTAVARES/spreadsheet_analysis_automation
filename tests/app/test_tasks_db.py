@@ -1,7 +1,7 @@
-from ..fixtures.tasks_fixtures import insert_tasks_with_both_status_into_db, insert_task_weekdays_into_db, insert_achieved_task_into_db, insert_users_tasks_into_db, insert_task_runtime_into_db
+from ..fixtures.tasks_fixtures import insert_tasks_with_both_status_into_db, insert_task_weekdays_into_db, insert_achieved_task_into_db, insert_users_tasks_into_db, insert_tasks_runtime_into_db
 from ..fixtures.sheets_fixtures import insert_sheet_into_db
 from ..fixtures.user_fixtures import insert_users_into_db, create_csv_users_file
-from app.queries.tasks_repository import get_first_task_in_db, get_tasks_with_true_status_in_db, get_taskweekday_by_current_day, get_achieved_tasks_by_task_id, get_first_achieved_task_in_db, get_users_tasks_by_task_id
+from app.queries.tasks_repository import get_first_task_in_db, get_tasks_with_true_status_in_db, get_taskweekday_by_current_day, get_achieved_tasks_by_task_id, get_first_achieved_task_in_db, get_users_tasks_by_task_id, get_tasks_runtime_by_task_id
 
 
 def test_get_task_by_task_id(insert_tasks_with_both_status_into_db):
@@ -47,9 +47,14 @@ def test_get_users_tasks_by_task_id(insert_users_tasks_into_db):
     gotten_users_tasks_in_db = get_users_tasks_by_task_id(
         task_id=users_tasks_in_db[0].task_id)
 
+    # Check if there is user_task in db.
     assert users_tasks_in_db[0].task_id == gotten_users_tasks_in_db[0][0].task_id
 
 
-def test_get_task_runtime_by_id(insert_task_runtime_into_db):
-    tasks_runtime = insert_task_runtime_into_db
-    pass
+def test_get_task_runtime_by_task_id(insert_tasks_runtime_into_db):
+    tasks_runtime = insert_tasks_runtime_into_db
+    gotten_tasks_runtime_from_db = get_tasks_runtime_by_task_id(
+        task_id=tasks_runtime[0].task_id)
+
+    # Check if there is task_runtime in db.
+    assert tasks_runtime[0].task_id == gotten_tasks_runtime_from_db[0][0].task_id

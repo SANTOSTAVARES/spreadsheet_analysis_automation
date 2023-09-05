@@ -118,7 +118,7 @@ def insert_users_tasks_into_db(insert_tasks_with_both_status_into_db, insert_use
 
 
 @pytest.fixture()
-def insert_task_runtime_into_db(insert_tasks_with_both_status_into_db):
+def insert_tasks_runtime_into_db(insert_tasks_with_both_status_into_db):
     task_id = insert_tasks_with_both_status_into_db[0].task_id
     time_now = datetime.now()
     time_one_hour_ago = time_now - timedelta(hours=1)
