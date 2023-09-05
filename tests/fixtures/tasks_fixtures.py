@@ -81,21 +81,6 @@ def insert_task_weekdays_into_db(insert_tasks_with_both_status_into_db):
 
 
 @pytest.fixture()
-def insert_achieved_task_into_db(insert_tasks_with_both_status_into_db):
-
-    task_id = insert_tasks_with_both_status_into_db[0].task_id
-    at = AchievedTask(task_id=task_id)
-    session.add(at)
-    session.commit()
-
-    yield at
-
-    session.delete(at)
-    session.commit()
-    session.close()
-
-
-@pytest.fixture()
 def insert_users_tasks_into_db(insert_tasks_with_both_status_into_db, insert_users_into_db):
     tasks_in_db = insert_tasks_with_both_status_into_db
     users_in_db = insert_users_into_db
