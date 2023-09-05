@@ -29,13 +29,6 @@ def get_taskweekday_by_current_day():
         return stmt.fetchall()
 
 
-def get_achieved_tasks_by_task_id(task_id: int):
-    with session as s:
-        stmt = s.execute(select(AchievedTask).where(
-            AchievedTask.task_id == task_id))
-        return stmt.fetchall()
-
-
 def get_users_tasks_by_task_id(task_id: int):
     with session as s:
         stmt = s.execute(select(UserTask).where(
