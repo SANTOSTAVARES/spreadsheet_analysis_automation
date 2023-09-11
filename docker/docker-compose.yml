@@ -8,6 +8,7 @@ services:
     environment:
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: teste_postgre
+      TZ: 'GMT-3'
+      PGTZ: 'GMT-3'
     ports:
       - 5432:5432
-  
