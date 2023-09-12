@@ -1,8 +1,8 @@
-from app.models.tasks import TaskWeekday
 from datetime import datetime
+from app.models.tasks import TaskWeekday
 
 
-def attribute_from_taksweekday_about_current_day():
+def attribute_from_taksweekday_about_current_day() -> TaskWeekday:
 
     current_day = datetime.now().strftime('%A').lower()
 
