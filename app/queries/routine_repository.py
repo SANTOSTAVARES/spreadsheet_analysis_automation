@@ -1,6 +1,6 @@
 from datetime import datetime
 from app.models.sheets import Sheet
-from app.models.tasks import Task, TaskRuntime, TaskWeekday, AchievedTask
+from app.models.tasks import Task, TaskRuntime, TaskWeekday
 from app.config.database import session
 from sqlalchemy import select
 from app.services.routine import attribute_from_taksweekday_about_current_day
@@ -18,21 +18,26 @@ def get_all_tasks_have_to_be_done_now():
     current_day_on_taskweekday_object = attribute_from_taksweekday_about_current_day()
 
     with session as s:
-        stmt = s.execute(select(TaskRuntime.runtime,
-                                Task.task_type,
-                                Sheet.identification_name,
-                                Task.main_column,
-                                Task.auxiliary_column,
-                                Task.reference_values,
-                                TaskRuntime.tasks_runtime_id)
-                         .join(TaskWeekday, TaskWeekday.task_id == Task.task_id)
-                         .join(TaskRuntime, TaskRuntime.task_id == Task.task_id)
-                         .join(Sheet, Sheet.sheet_id == Task.sheet_id)
-                         .where(
-            (Task.task_status == True)
-            &
-            (current_day_on_taskweekday_object == True)
-            &
-            (TaskRuntime.runtime < time_now)
-        ))
-        return stmt.fetchall()
+        stmt = s.execute(
+            select(TaskRuntime.runtime.label("runtime"),
+                   Task.task_type.label("task_type"),
+                   Sheet.identification_name.label(
+                "identification_name"),
+                Task.main_column.label("main_column"),
+                Task.auxiliary_column.label(
+                "auxialiary_column"),
+                Task.reference_values.label(
+                "reference_values"),
+                TaskRuntime.tasks_runtime_id.label("tasks_runtime"))
+            .join(TaskWeekday, TaskWeekday.task_id == Task.task_id)
+            .join(TaskRuntime, TaskRuntime.task_id == Task.task_id)
+            .join(Sheet, Sheet.sheet_id == Task.sheet_id)
+            .where(
+                (Task.task_status == True)
+                &
+                (current_day_on_taskweekday_object == True)
+                &
+                (TaskRuntime.runtime < time_now)
+            )
+        ).all()
+        return stmt
