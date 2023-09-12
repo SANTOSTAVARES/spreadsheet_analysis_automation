@@ -1,17 +1,20 @@
-from settings import setting
-from smartsheet_dataframe import get_sheet_as_df
-from pandas import to_datetime, to_numeric
-from pandas.core.frame import DataFrame
+from dataclasses import dataclass
 import requests
 import sys
+from pandas.core.frame import DataFrame
+from smartsheet_dataframe import get_sheet_as_df
+from pandas import to_datetime, to_numeric
+from app.config.settings import setting
 
 sys.path.append('..\\config')
 token = setting.SMARTSHEET_TOKEN
 
 
+@dataclass
 class Smartsheet:
-    def __init__(self, user_token: str = token) -> None:
-        self.user_token = user_token
+
+    sheet_id: str
+    user_token: str = token
 
     def get_bearer_authentication(self) -> dict:
         return {'Authorization': f'Bearer {self.user_token}'}
@@ -29,32 +32,36 @@ class Smartsheet:
         else:
             return response.json()["data"][0]
 
-    def get_sheet_as_dataframe(self, sheet_id: str) -> DataFrame:
+    def get_sheet_as_dataframe(self) -> DataFrame:
 
         try:
             df = get_sheet_as_df(token=self.user_token,
-                                 sheet_id=sheet_id)
+                                 sheet_id=self.sheet_id)
         except Exception as e:
             return e
         else:
             return df
 
 
+@dataclass
 class DataTable:
-    def __init__(self, data_table: DataFrame) -> None:
-        self.data_table = data_table
 
-    def check_if_there_is_only_date_in_column(self, column_name: str) -> bool:
+    data_table: DataFrame
+    main_column: str
+    auxiliary_column: str
+    reference_values: str
+
+    def check_if_there_is_only_date_in_column(self) -> bool:
         try:
-            to_datetime(self.data_table[column_name])
+            to_datetime(self.data_table[self.main_column])
         except:
             return False
         else:
             return True
 
-    def check_if_there_is_only_integer_in_column(self, column_name: str) -> bool:
+    def check_if_there_is_only_integer_in_column(self) -> bool:
         try:
-            to_numeric(self.data_table[column_name])
+            to_numeric(self.data_table[self.main_column])
         except:
             return False
         else:
