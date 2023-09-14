@@ -1,6 +1,6 @@
 from datetime import date
 from sqlalchemy import select
-from app.services.routine import attribute_from_taksweekday_about_current_day
+from app.services.daily_checking import attribute_from_taksweekday_about_current_day
 from app.config.database import session
 from app.models.tasks import Task, TaskWeekday, AchievedTask, UserTask, TaskRuntime
 
@@ -9,12 +9,6 @@ def get_task_by_task_id(task_id: int) -> Task:
     with session as s:
         stmt = s.execute(select(Task).where(Task.task_id == task_id))
         return stmt.scalars()
-
-
-def get_first_task_in_db() -> Task:
-    with session as s:
-        stmt = s.execute(select(Task))
-        return stmt.scalar()
 
 
 def get_tasks_with_true_status_in_db():

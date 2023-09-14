@@ -2,17 +2,16 @@ from datetime import datetime, timedelta
 import pytest
 from app.config.database import session
 from app.models.tasks import Task, TaskWeekday, AchievedTask, UserTask, TaskRuntime
-from tests.fixtures.sheets_fixtures import insert_sheet_into_db
 from tests.fixtures.user_fixtures import insert_users_into_db
 
 
 @pytest.fixture()
-def insert_tasks_with_both_status_into_db(insert_sheet_into_db):
-    sheet_id = insert_sheet_into_db.sheet_id
+def insert_tasks_with_both_status_into_db():
+
     tasks_to_insert_in_db = [
         {
             "task_status": True,
-            "sheet_id": sheet_id,
+            "sheet_name": "plan1",
             "task_type": "Type 1",
             "main_column": "Column 1",
             "auxiliary_column": "Column 2",
@@ -20,16 +19,16 @@ def insert_tasks_with_both_status_into_db(insert_sheet_into_db):
         },
         {
             "task_status": True,
-            "sheet_id": sheet_id,
-            "task_type": "Type 99",
+            "sheet_name": "plan1",
+            "task_type": "Type 1",
             "main_column": "Column 1",
             "auxiliary_column": "Column 2",
             "reference_values": "Values",
         },
         {
             "task_status": False,
-            "sheet_id": sheet_id,
-            "task_type": "Type 2",
+            "sheet_name": "plan1",
+            "task_type": "Type 1",
             "main_column": "Column 3",
             "auxiliary_column": "Column 4",
             "reference_values": "More values",
@@ -40,7 +39,7 @@ def insert_tasks_with_both_status_into_db(insert_sheet_into_db):
     for t in tasks_to_insert_in_db:
         task = Task(
             task_status=t["task_status"],
-            sheet_id=t["sheet_id"],
+            sheet_name=t["sheet_name"],
             task_type=t["task_type"],
             main_column=t["main_column"],
             auxiliary_column=t["auxiliary_column"],
@@ -49,7 +48,7 @@ def insert_tasks_with_both_status_into_db(insert_sheet_into_db):
         tasks_list.append(task)
     session.add_all(tasks_list)
     session.commit()
-    # breakpoint()
+
     yield tasks_list
 
     for task in tasks_list:

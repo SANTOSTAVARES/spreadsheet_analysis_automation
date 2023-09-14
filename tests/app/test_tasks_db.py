@@ -1,15 +1,6 @@
 from ..fixtures.tasks_fixtures import insert_tasks_with_both_status_into_db, insert_task_weekdays_into_db, insert_achieved_task_into_db, insert_users_tasks_into_db, insert_tasks_runtime_into_db
-from ..fixtures.sheets_fixtures import insert_sheet_into_db
 from ..fixtures.user_fixtures import insert_users_into_db, create_csv_users_file
-from app.queries.tasks_repository import get_first_task_in_db, get_tasks_with_true_status_in_db, get_taskweekday_by_current_day, get_users_tasks_by_task_id, get_tasks_runtime_by_task_id, get_achieved_task_by_tasks_runtime_id
-
-
-def test_get_task_by_task_id(insert_tasks_with_both_status_into_db):
-    tasks_inserted_in_db = insert_tasks_with_both_status_into_db
-    task_id = get_first_task_in_db().sheet_id
-
-    # Check if there is task into db.
-    assert tasks_inserted_in_db[0].sheet_id == task_id
+from app.queries.tasks_repository import get_tasks_with_true_status_in_db, get_taskweekday_by_current_day, get_users_tasks_by_task_id, get_tasks_runtime_by_task_id, get_achieved_task_by_tasks_runtime_id
 
 
 def test_get_tasks_with_true_status(insert_tasks_with_both_status_into_db):

@@ -1,7 +1,7 @@
+from dataclasses import dataclass
+from datetime import time
 import sqlalchemy as sa
 from ..config.database import Base
-from datetime import time
-from dataclasses import dataclass
 
 
 @dataclass
@@ -10,12 +10,11 @@ class Task(Base):
 
     task_id: int = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     task_status: bool = sa.Column(sa.Boolean, nullable=False, index=True)
-    sheet_id: int = sa.Column(sa.ForeignKey(
-        "sheets.sheet_id"), nullable=False, index=True)
+    sheet_name: str = sa.Column(sa.String, nullable=False)
     task_type: str = sa.Column(sa.String, nullable=False)
     main_column: str = sa.Column(sa.String, nullable=False)
-    auxiliary_column: str = sa.Column(sa.String, nullable=False)
-    reference_values: str = sa.Column(sa.String, nullable=False)
+    auxiliary_column: str = sa.Column(sa.String, nullable=True)
+    reference_values: str = sa.Column(sa.String, nullable=True)
 
 
 @dataclass

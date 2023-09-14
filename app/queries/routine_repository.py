@@ -1,16 +1,8 @@
 from datetime import datetime
-from app.models.sheets import Sheet
 from app.models.tasks import Task, TaskRuntime, TaskWeekday
 from app.config.database import session
 from sqlalchemy import select
-from app.services.routine import attribute_from_taksweekday_about_current_day
-
-
-def get_sheet_by_identification_name(identification_name: str) -> Sheet:
-    with session as s:
-        stmt = s.execute(select(Sheet).where(
-            Sheet.identification_name == identification_name))
-        return stmt.scalar()
+from app.services.daily_checking import attribute_from_taksweekday_about_current_day
 
 
 def get_all_tasks_have_to_be_done_now():
@@ -19,19 +11,9 @@ def get_all_tasks_have_to_be_done_now():
 
     with session as s:
         stmt = s.execute(
-            select(TaskRuntime.runtime.label("runtime"),
-                   Task.task_type.label("task_type"),
-                   Sheet.identification_name.label(
-                "identification_name"),
-                Task.main_column.label("main_column"),
-                Task.auxiliary_column.label(
-                "auxialiary_column"),
-                Task.reference_values.label(
-                "reference_values"),
-                TaskRuntime.tasks_runtime_id.label("tasks_runtime"))
+            select(Task)
             .join(TaskWeekday, TaskWeekday.task_id == Task.task_id)
             .join(TaskRuntime, TaskRuntime.task_id == Task.task_id)
-            .join(Sheet, Sheet.sheet_id == Task.sheet_id)
             .where(
                 (Task.task_status == True)
                 &
