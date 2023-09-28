@@ -105,13 +105,16 @@ def insert_users_tasks_into_db(insert_tasks_with_both_status_into_db, insert_use
 def insert_tasks_runtime_into_db(insert_tasks_with_both_status_into_db):
     task_id = insert_tasks_with_both_status_into_db[0].task_id
     time_now = datetime.now()
+    time_two_hours_ago = time_now - timedelta(hours=2)
     time_one_hour_ago = time_now - timedelta(hours=1)
     time_after_one_hour = time_now + timedelta(hours=1)
 
     tasks_runtime = [
+        {"runtime": time_two_hours_ago, "task_id": task_id},
         {"runtime": time_one_hour_ago, "task_id": task_id},
         {"runtime": time_after_one_hour, "task_id": task_id},
     ]
+
     tasks_runtime_list = []
     for tr in tasks_runtime:
         task_runtime = TaskRuntime(
