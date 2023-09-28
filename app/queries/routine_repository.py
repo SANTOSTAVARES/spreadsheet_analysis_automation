@@ -11,7 +11,12 @@ def get_all_tasks_have_to_be_done_now():
 
     with session as s:
         stmt = s.execute(
-            select(Task)
+            select(Task.sheet_name,
+                   Task.task_type,
+                   Task.main_column,
+                   Task.auxiliary_column,
+                   Task.reference_values,
+                   TaskRuntime.tasks_runtime_id)
             .join(TaskWeekday, TaskWeekday.task_id == Task.task_id)
             .join(TaskRuntime, TaskRuntime.task_id == Task.task_id)
             .where(
@@ -22,4 +27,16 @@ def get_all_tasks_have_to_be_done_now():
                 (TaskRuntime.runtime < time_now)
             )
         ).all()
-        return stmt
+
+    task_list = []
+    for task in stmt:
+        task_list.append(
+            {
+                "sheet_name": task.sheet_name,
+                "task_type": task.task_type,
+                "main_column": task.main_column,
+                "auxiliary_column": task.auxiliary_column,
+                "reference_values": task.reference_values,
+                "tasks_runtime_id": task.tasks_runtime_id}
+        )
+    return task_list
