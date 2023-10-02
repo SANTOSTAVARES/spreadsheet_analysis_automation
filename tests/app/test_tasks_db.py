@@ -1,6 +1,10 @@
-from ..fixtures.tasks_fixtures import insert_tasks_with_both_status_into_db, insert_task_weekdays_into_db, insert_achieved_task_into_db, insert_users_tasks_into_db, insert_tasks_runtime_into_db
+from datetime import date
+from ..fixtures.tasks_fixtures import (insert_tasks_with_both_status_into_db, insert_task_weekdays_into_db, insert_achieved_task_into_db,
+                                       insert_users_tasks_into_db, insert_tasks_runtime_into_db)
+from app.queries.tasks_repository import (get_tasks_with_true_status_in_db, get_taskweekday_by_current_day,
+                                          get_users_tasks_by_task_id, get_tasks_runtime_by_task_id, get_achieved_task_by_tasks_runtime_id,
+                                          get_achieved_task_by_tasks_runtime_id_and_created_at)
 from ..fixtures.user_fixtures import insert_users_into_db, create_csv_users_file
-from app.queries.tasks_repository import get_tasks_with_true_status_in_db, get_taskweekday_by_current_day, get_users_tasks_by_task_id, get_tasks_runtime_by_task_id, get_achieved_task_by_tasks_runtime_id
 
 
 def test_get_tasks_with_true_status(insert_tasks_with_both_status_into_db):
@@ -42,10 +46,15 @@ def test_get_task_runtime_by_task_id(insert_tasks_runtime_into_db):
 
 
 def test_get_achieved_tasks_by_task_runtime_id(insert_achieved_task_into_db):
-    achieved_task = insert_achieved_task_into_db
+    achieved_task_inserted_into_db = insert_achieved_task_into_db
     gotten_achieved_task_from_db = get_achieved_task_by_tasks_runtime_id(
-        tasks_runtime_id=achieved_task.tasks_runtime_id)
+        tasks_runtime_id=achieved_task_inserted_into_db.tasks_runtime_id)
 
     # Check if there is achieved_task in db.
-    assert achieved_task.tasks_runtime_id == gotten_achieved_task_from_db[
+    assert achieved_task_inserted_into_db.tasks_runtime_id == gotten_achieved_task_from_db[
         0][0].tasks_runtime_id
+
+    # Check if query return empty list, when nonexistent tasks_runtime_id is informed.
+    nonexistent_achieved_task = get_achieved_task_by_tasks_runtime_id(
+        tasks_runtime_id=9_999)
+    assert len(nonexistent_achieved_task) == 0
