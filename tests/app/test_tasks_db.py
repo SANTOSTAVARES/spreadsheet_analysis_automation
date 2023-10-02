@@ -58,3 +58,12 @@ def test_get_achieved_tasks_by_task_runtime_id(insert_achieved_task_into_db):
     nonexistent_achieved_task = get_achieved_task_by_tasks_runtime_id(
         tasks_runtime_id=9_999)
     assert len(nonexistent_achieved_task) == 0
+
+
+def test_get_achieved_task_by_tasks_runtime_id_and_created_at(insert_achieved_task_into_db):
+    achieved_task_inserted_into_db = insert_achieved_task_into_db
+    gotten_tasks_runtime_from_db = get_achieved_task_by_tasks_runtime_id_and_created_at(tasks_runtime_id=achieved_task_inserted_into_db.tasks_runtime_id,
+                                                                                        created_at=date.today())
+    # Check if there is task_runtime in db.
+    assert achieved_task_inserted_into_db.tasks_runtime_id == gotten_tasks_runtime_from_db[
+        0][0].tasks_runtime_id
