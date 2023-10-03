@@ -56,3 +56,9 @@ def get_achieved_task_by_tasks_runtime_id_and_created_at(tasks_runtime_id: int, 
             )
         )
         return stmt.fetchall()
+
+
+def get_all_tasks_runtime():
+    with session as s:
+        stmt = s.execute(select(TaskRuntime))
+        return stmt.scalars().all()
