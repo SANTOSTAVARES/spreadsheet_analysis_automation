@@ -5,6 +5,10 @@ class Settings(BaseSettings):
 
     SMARTSHEET_TOKEN: str
     DATABASE_URL: str
+    REAL_EMAIL: str
+    REAL_USER_NAME: str
+    REAL_SHEET_NAME: str
+    REAL_MAIN_COLUMN: str
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8")
