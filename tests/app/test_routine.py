@@ -1,9 +1,7 @@
-from app.queries.routine_repository import get_all_tasks_have_to_be_done_now
-from tests.fixtures.tasks_fixtures import insert_tasks_runtime_into_db, insert_tasks_with_both_status_into_db, insert_users_tasks_into_db, insert_task_weekdays_into_db
-from tests.fixtures.sheets_fixtures import insert_sheet_into_db
-from tests.fixtures.user_fixtures import insert_users_into_db, create_csv_users_file
+from app.domain.routine import do_tasks
+from tests.fixtures.real_user_and_sheet_fixtures import insert_real_user_and_sheet_into_db
 
 
-def test_routine______(insert_tasks_runtime_into_db, insert_users_tasks_into_db, insert_task_weekdays_into_db):
-    t = get_all_tasks_have_to_be_done_now()
-    breakpoint()
+def test_routine(insert_real_user_and_sheet_into_db):
+    real_user_and_sheet = insert_real_user_and_sheet_into_db
+    do_tasks()
