@@ -2,8 +2,8 @@ from dataclasses import dataclass
 import requests
 import sys
 from pandas.core.frame import DataFrame
-from smartsheet_dataframe import get_sheet_as_df
 from pandas import to_datetime, to_numeric
+from smartsheet_dataframe import get_sheet_as_df
 from app.config.settings import setting
 
 sys.path.append('..\\config')
@@ -68,6 +68,23 @@ class DataChecking:
         else:
             return True
 
+    def check_range(self):
+        min_max_number = self.reference_values.split("|")
+        min_number = int(min_max_number[0])
+        max_number = int(min_max_number[1])
+        row_value_outside_rule = []
+
+        for index, row in self.data_table.iterrows():
+            cell_value = row[self.main_column]
+
+            if cell_value != '':
+                if isinstance(cell_value, str):
+                    row_value_outside_rule.append([index, cell_value])
+                elif cell_value < min_number or cell_value > max_number:
+                    row_value_outside_rule.append([index, cell_value])
+
+        return row_value_outside_rule
+
     def do_check(self) -> dict:
 
         match self.checking_type:
@@ -75,3 +92,5 @@ class DataChecking:
                 return self.check_if_there_is_only_date_in_column()
             case '02':
                 return self.check_if_there_is_only_integer_in_column()
+            case '03':
+                return self.check_range()
