@@ -68,7 +68,7 @@ class DataChecking:
         else:
             return True
 
-    def check_range(self):
+    def check_value_range_and_ignore_blank_cell(self):
         min_max_number = self.reference_values.split("|")
         min_number = int(min_max_number[0])
         max_number = int(min_max_number[1])
@@ -93,4 +93,4 @@ class DataChecking:
             case '02':
                 return self.check_if_there_is_only_integer_in_column()
             case '03':
-                return self.check_range()
+                return self.check_value_range_and_ignore_blank_cell()
