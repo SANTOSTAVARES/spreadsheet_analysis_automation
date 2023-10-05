@@ -51,7 +51,6 @@ class Smartsheet:
                 sheet_information["name"] = sheet["name"]
                 sheet_information["permalink"] = sheet["permalink"]
                 break
-
         return sheet_information
 
 
@@ -80,7 +79,7 @@ class DataChecking:
         else:
             return True
 
-    def check_value_range_and_ignore_blank_cell(self):
+    def check_value_range_and_ignore_blank_cell(self) -> list:
         min_max_number = self.reference_values.split("|")
         min_number = int(min_max_number[0])
         max_number = int(min_max_number[1])
@@ -95,7 +94,7 @@ class DataChecking:
                 elif cell_value < min_number or cell_value > max_number:
                     row_value_outside_rule.append([index, cell_value])
 
-        return row_value_outside_rule
+        return [row_value_outside_rule, "Checa se os valores estão entre um intervalo específico e ignora células sem preenchimento."]
 
     def do_check(self) -> dict:
 
