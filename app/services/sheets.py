@@ -13,7 +13,7 @@ token = setting.SMARTSHEET_TOKEN
 @dataclass
 class Smartsheet:
 
-    sheet_id: str
+    sheet_id: str | None
     user_token: str = token
 
     def get_bearer_authentication(self) -> dict:
@@ -30,7 +30,7 @@ class Smartsheet:
         except Exception as e:
             return e
         else:
-            return response.json()["data"][0]
+            return response.json()["data"]
 
     def get_sheet_as_dataframe(self) -> DataFrame:
 
@@ -41,6 +41,18 @@ class Smartsheet:
             return e
         else:
             return df
+
+    def get_sheet_information_by_sheet_id(self):
+        sheets_name_list = self.get_sheets_name_list()
+        sheet_information = {}
+        for sheet in sheets_name_list:
+
+            if str(sheet["id"]) == self.sheet_id:
+                sheet_information["name"] = sheet["name"]
+                sheet_information["permalink"] = sheet["permalink"]
+                break
+
+        return sheet_information
 
 
 @dataclass
