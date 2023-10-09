@@ -19,18 +19,9 @@ class Smartsheet:
     def get_bearer_authentication(self) -> dict:
         return {'Authorization': f'Bearer {self.user_token}'}
 
-    def get_sheets_name_list(self) -> dict:
-        """This returns a list of Sheet objects, where each sheet has an id attribute."""
-
-        sheets_list_url = "https://api.smartsheet.com/2.0/sheets"
-
-        try:
-            response = requests.request(
-                method="GET", url=sheets_list_url, headers=self.get_bearer_authentication())
-        except Exception as e:
-            return e
-        else:
-            return response.json()["data"]
+    def get_sheets_name_list(self) -> smartsheet.models.sheet.Sheet:
+        smart = smartsheet.Smartsheet(access_token=self.user_token)
+        return smart.Sheets.list_sheets(include_all=True).data
 
     def get_sheet_as_dataframe(self) -> DataFrame:
 
