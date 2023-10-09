@@ -35,7 +35,7 @@ def send_email(sheet_identification: str,
             <p><b>ID:</b> {sheet_identification}</p>
             <p><b>Planilha:</b> {sheet_information["name"]}</p>
             <p><b>Coluna:</b> {main_column}</p>
-            <p><b>Link:</b> {sheet_information["Permalink"]}</p>
+            <p><b>Link:</b> {sheet_information["permalink"]}</p>
             <p><b>Regra de validação:</b> {rule_description}</p>
 
             <table>
