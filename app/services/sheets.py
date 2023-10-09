@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-import requests
 import sys
 from pandas.core.frame import DataFrame
 from pandas import to_datetime, to_numeric
+import smartsheet
 from smartsheet_dataframe import get_sheet_as_df
 from app.config.settings import setting
 
@@ -47,10 +47,11 @@ class Smartsheet:
         sheet_information = {}
         for sheet in sheets_name_list:
 
-            if str(sheet["id"]) == self.sheet_id:
-                sheet_information["name"] = sheet["name"]
-                sheet_information["permalink"] = sheet["permalink"]
+            if str(sheet.id) == self.sheet_id:
+                sheet_information["name"] = sheet.name
+                sheet_information["permalink"] = sheet.permalink
                 break
+        del sheets_name_list
         return sheet_information
 
 
