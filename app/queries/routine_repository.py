@@ -11,7 +11,8 @@ def get_all_tasks_have_to_be_done_now():
 
     with session as s:
         stmt = s.execute(
-            select(Task.sheet_name,
+            select(Task.task_id,
+                   Task.sheet_name,
                    Task.task_type,
                    Task.main_column,
                    Task.auxiliary_column,
@@ -32,6 +33,7 @@ def get_all_tasks_have_to_be_done_now():
     for task in stmt:
         task_list.append(
             {
+                "task_id": task.task_id,
                 "sheet_name": task.sheet_name,
                 "task_type": task.task_type,
                 "main_column": task.main_column,
