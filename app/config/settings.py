@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     REAL_USER_NAME: str
     REAL_SHEET_NAME: str
     REAL_MAIN_COLUMN: str
+    TASK_TYPE: str
+    AUXILIARY_COLUMN: str | None
+    REFERENCE_VALUES: str
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8")
