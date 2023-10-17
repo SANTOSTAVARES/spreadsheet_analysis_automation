@@ -16,10 +16,10 @@ def insert_real_user_and_sheet_into_db():
 
     task = Task(task_status=True,
                 sheet_name=setting.REAL_SHEET_NAME,
-                task_type="03",
+                task_type=setting.TASK_TYPE,
                 main_column=setting.REAL_MAIN_COLUMN,
-                auxiliary_column=None,
-                reference_values="01|1000")
+                auxiliary_column=setting.AUXILIARY_COLUMN,
+                reference_values=setting.REFERENCE_VALUES)
 
     session.add(real_user)
     session.add(task)
