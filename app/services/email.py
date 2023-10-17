@@ -8,11 +8,15 @@ def send_email(sheet_identification: str,
                row_value_outside_rule: str,
                recipients_emails: list) -> None:
 
+    recipients_emails_as_str = ""
+    for email in recipients_emails:
+        recipients_emails_as_str += email + "; "
+
     ol = win32com.client.Dispatch('Outlook.Application')
     olmailitem = 0x0
     newmail = ol.CreateItem(olmailitem)
     newmail.Subject = 'Validação automática de dados da Smartsheet'
-    newmail.To = 'gabriel.tavares@syngenta.com'
+    newmail.To = recipients_emails_as_str
 
     newmail.HTMLbody = (
         f""" <!DOCTYPE html>
