@@ -2,10 +2,10 @@ from datetime import datetime
 from app.models.tasks import Task, TaskRuntime, TaskWeekday
 from app.config.database import session
 from sqlalchemy import select
-from app.services.daily_checking import attribute_from_taksweekday_about_current_day
+from app.domain.daily_checking import attribute_from_taksweekday_about_current_day
 
 
-def get_all_tasks_have_to_be_done_now():
+def get_all_tasks_have_to_be_done_now() -> list[dict]:
     time_now = datetime.now().time()
     current_day_on_taskweekday_object = attribute_from_taksweekday_about_current_day()
 
