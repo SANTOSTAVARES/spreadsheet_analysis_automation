@@ -1,7 +1,8 @@
 from datetime import date
 from sqlalchemy import select
-from app.services.daily_checking import attribute_from_taksweekday_about_current_day
 from app.config.database import session
+from app.domain.daily_checking import attribute_from_taksweekday_about_current_day
+
 from app.models.tasks import Task, TaskWeekday, AchievedTask, UserTask, TaskRuntime
 
 
