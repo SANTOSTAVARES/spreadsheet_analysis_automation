@@ -63,6 +63,12 @@ def _do_tasks():
             created_at=date.today())
 
         if len(achieved_task) == 0:
-            data_checking = DataChecking()
+            DataChecking(sheet_id=task["sheet_name"],
+                         sheet_identification=task["sheet_name"],
+                         task_id=task["task_id"],
+                         checking_type=task["task_type"],
+                         main_column=task["main_column"],
+                         auxiliary_column=task["auxiliary_column"],
+                         reference_values=task["reference_values"]).do_checking_and_send_email()
         else:
             achieved_task.pop(0)

@@ -52,11 +52,10 @@ class DataChecking:
 
     sheet_id: str | None
     user_token: str = token
-    sheet_identification: str
-    # data_table: DataFrame
-    task_id: int
-    checking_type: str
-    main_column: str
+    sheet_identification: str = None
+    task_id: int = None
+    checking_type: str = None
+    main_column: str = None
     auxiliary_column: str = None
     reference_values: str = None
 
@@ -97,17 +96,22 @@ class DataChecking:
     def list_of_row_value_outside_rule_converted_to_html_table_lines(self) -> str:
         table_lines = ""
         for i in self.specify_checking():
-
             list_converted_to_html_table_lines = f"""<tr>
                 <td>{i[0]}</td>
                 <td>{i[1]}</td>
             </tr>"""
 
             table_lines += list_converted_to_html_table_lines
-
+            breakpoint()
         return table_lines
 
     def send_email(self) -> None:
+
+        sheet_identification = self.sheet_identification
+        sheet_information = self.get_sheet_information_by_sheet_id()
+        main_column = self.main_column
+        validation_rule = self.specify_checking()[1]
+        list_of_row_value_outside_rule = self.list_of_row_value_outside_rule_converted_to_html_table_lines()
 
         recipients_emails_as_str = ""
         for email in self.emails_list():
@@ -137,18 +141,18 @@ class DataChecking:
             
             <body>
                 <p>Este é um e-mail automático, gerado por ter sido encontrado divergências em relação a regra para coluna e planilha descrita abaixo.</p>
-                <p><b>ID: </b>{self.sheet_identification}</p>
-                <p><b>Planilha: </b>{self.get_sheet_information_by_sheet_id["name"]}</p>
-                <p><b>Coluna: </b>{self.main_column}</p>
-                <p><b>Link: </b>{self.get_sheet_information_by_sheet_id["permalink"]}</p>
-                <p><b>Regra de validação:</b> {self.specify_checking[1]}</p>
+                <p><b>ID: </b>{sheet_identification}</p>
+                <p><b>Planilha: </b>{sheet_information["name"]}</p>
+                <p><b>Coluna: </b>{main_column}</p>
+                <p><b>Link: </b>{sheet_information["permalink"]}</p>
+                <p><b>Regra de validação:</b> {validation_rule}</p>
 
                 <table>
                     <tr>
                         <th>Linha</th>
                         <th>Valor</th>
                     </tr>
-                    {self.list_of_row_value_outside_rule_converted_to_html_table_lines()}         
+                    {list_of_row_value_outside_rule}         
                 </table>
             </body>
             </html> 
@@ -179,9 +183,11 @@ class DataChecking:
             case '03':
                 return self.check_value_range_and_ignore_blank_cell()
             case _:
-                return ["", ""]
+                return [None, None]
 
-    def do_checking_and_send_email(self) -> dict:
-        checking_result = self.specify_checking
-        if checking_result[0] > 0:
-            self.send_email()
+    def do_checking_and_send_email(self):
+        checking_result = self.specify_checking()
+        if len(checking_result[0]) > 0:
+            return self.send_email()
+        else:
+            return None
