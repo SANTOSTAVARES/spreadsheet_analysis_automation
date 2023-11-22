@@ -95,14 +95,16 @@ class DataChecking:
 
     def list_of_row_value_outside_rule_converted_to_html_table_lines(self) -> str:
         table_lines = ""
-        for i in self.specify_checking():
+        for i in self.specify_checking()[0]:
+            smartsheet_reference_line = i[0] + 1
+            cell_value = i[1]
             list_converted_to_html_table_lines = f"""<tr>
-                <td>{i[0]}</td>
-                <td>{i[1]}</td>
+                <td>{smartsheet_reference_line}</td>
+                <td>{cell_value}</td>
             </tr>"""
 
             table_lines += list_converted_to_html_table_lines
-            breakpoint()
+
         return table_lines
 
     def send_email(self) -> None:
