@@ -1,12 +1,8 @@
 from datetime import date
-from app.config.database import session
-from app.models.tasks import AchievedTask
-from app.queries.users_repository import get_users_by_task_id
+from app.domain.sql.dml.insert import insert_achieved_task_into_db
 from app.queries.routine_repository import get_all_tasks_have_to_be_done_now
 from app.queries.tasks_repository import get_achieved_task_by_tasks_runtime_id_and_created_at
-from app.services.sheets import Smartsheet, DataChecking
-from app.services.email import send_email
-from app.services.html import list_of_row_value_outside_rule_converted_to_html_table_lines
+from app.services.sheets import DataChecking
 
 
 def analyze_sheet_and_record_cheking_into_db():
@@ -26,10 +22,9 @@ def analyze_sheet_and_record_cheking_into_db():
                          auxiliary_column=task["auxiliary_column"],
                          reference_values=task["reference_values"]).do_checking_and_send_email()
 
-            achieved_task = AchievedTask(
+            insert_achieved_task_into_db(
                 tasks_runtime_id=task["tasks_runtime_id"])
-            session.add(achieved_task)
-            session.commit()
+
             return task
         else:
             achieved_task.pop(0)
