@@ -11,7 +11,7 @@ sys.path.append('..\\config')
 token = setting.SMARTSHEET_TOKEN
 
 
-@dataclass
+@dataclass(frozen=True)
 class DataChecking:
 
     sheet_id: str | None
@@ -146,6 +146,8 @@ class DataChecking:
 
     def specify_checking(self) -> list:
         match self.checking_type:
+            case '01':
+                return self.check_duplicate_values_in_a_specific_column()
             case '03':
                 return self.check_value_range_and_ignore_blank_cell()
             case _:
@@ -157,3 +159,15 @@ class DataChecking:
             return self.send_email()
         else:
             return None
+
+    def check_duplicate_values_in_a_specific_column(self) -> list:
+        df = self.get_sheet_as_dataframe()
+        bool_checking = df.duplicated(subset=[self.main_column])
+        true_values = df[bool_checking]
+        row_value_outside_rule = []
+        for i in true_values.index:
+            row_number = i
+            value = df.loc[row_number, self.main_column]
+            row_value_outside_rule.append([row_number, value])
+
+        return [row_value_outside_rule, "Checa as linhas com duplicidade de preenchimento."]
