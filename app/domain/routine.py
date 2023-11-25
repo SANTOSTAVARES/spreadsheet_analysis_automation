@@ -26,5 +26,5 @@ def analyze_sheet_and_record_cheking_into_db():
                 tasks_runtime_id=task["tasks_runtime_id"])
 
             return task
-        else:
-            achieved_task.pop(0)
+
+        achieved_task.pop(0)
