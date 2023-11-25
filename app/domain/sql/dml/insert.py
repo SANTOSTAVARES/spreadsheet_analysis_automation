@@ -1,5 +1,5 @@
-from app.models.tasks import AchievedTask
 from app.config.database import session
+from app.models.tasks import AchievedTask
 
 
 def insert_achieved_task_into_db(tasks_runtime_id: int) -> AchievedTask:
