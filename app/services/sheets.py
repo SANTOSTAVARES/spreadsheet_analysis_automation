@@ -127,6 +127,22 @@ class DataChecking:
         newmail.Send()
         return None
 
+    def do_checking_and_send_email(self):
+        checking_result = self.specify_checking()
+        if len(checking_result[0]) > 0:
+            return self.send_email()
+        else:
+            return None
+
+    def specify_checking(self) -> list:
+        match self.checking_type:
+            case '01':
+                return self.check_duplicate_values_in_a_specific_column()
+            case '03':
+                return self.check_value_range_and_ignore_blank_cell()
+            case _:
+                return [None, None]
+
     def check_value_range_and_ignore_blank_cell(self) -> list:
         min_max_number = self.reference_values.split("|")
         min_number = int(min_max_number[0])
@@ -143,22 +159,6 @@ class DataChecking:
                     row_value_outside_rule.append([index, cell_value])
 
         return [row_value_outside_rule, "Checa se os valores estão entre um intervalo específico e ignora células sem preenchimento."]
-
-    def specify_checking(self) -> list:
-        match self.checking_type:
-            case '01':
-                return self.check_duplicate_values_in_a_specific_column()
-            case '03':
-                return self.check_value_range_and_ignore_blank_cell()
-            case _:
-                return [None, None]
-
-    def do_checking_and_send_email(self):
-        checking_result = self.specify_checking()
-        if len(checking_result[0]) > 0:
-            return self.send_email()
-        else:
-            return None
 
     def check_duplicate_values_in_a_specific_column(self) -> list:
         df = self.get_sheet_as_dataframe()
