@@ -1,5 +1,5 @@
 from datetime import date
-from app.domain.sql.dml.insert import insert_achieved_task_into_db
+from .sql.dml.insert import insert_achieved_task_into_db
 from app.queries.routine_repository import get_all_tasks_have_to_be_done_now
 from app.queries.tasks_repository import get_achieved_task_by_tasks_runtime_id_and_created_at
 from app.services.sheets import DataChecking
