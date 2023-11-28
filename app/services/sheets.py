@@ -138,6 +138,8 @@ class DataChecking:
         match self.checking_type:
             case '01':
                 return self.check_duplicate_values_in_a_specific_column()
+            case '02':
+                return self.check_multiple_columns_values_sum_if_it_is_less_than_specific_column_value()
             case '03':
                 return self.check_value_range_and_ignore_blank_cell()
             case _:
@@ -171,3 +173,19 @@ class DataChecking:
             row_value_outside_rule.append([row_number, value])
 
         return [row_value_outside_rule, "Checa as linhas com duplicidade de preenchimento."]
+
+    def check_multiple_columns_values_sum_if_it_is_less_than_specific_column_value(self) -> list:
+        multiple_columns = self.main_column.split(sep="|")
+        row_value_outside_rule = []
+        df = self.get_sheet_as_dataframe()
+
+        for row in df.index:
+            row_sum = float()
+            for columns in multiple_columns:
+                row_sum += df.loc[row, columns]
+
+            reference_value = df.loc[row, self.auxiliary_column]
+            if row_sum > reference_value:
+                row_value_outside_rule.append([row, reference_value])
+
+        return [row_value_outside_rule, f"Checa se a soma dos valores das colunas [{', '.join(multiple_columns)}], é maior que o valor da coluna {self.auxiliary_column}."]
