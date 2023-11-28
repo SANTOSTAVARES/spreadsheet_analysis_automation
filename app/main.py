@@ -1,5 +1,5 @@
 from time import sleep
-from domain.routine import analyze_sheet_and_record_cheking_into_db
+from app.domain.routine import analyze_sheet_and_record_cheking_into_db
 
 
 def main():
