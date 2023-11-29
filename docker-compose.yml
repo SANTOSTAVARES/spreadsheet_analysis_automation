@@ -6,9 +6,9 @@ services:
     image: postgres:14.2-alpine
     restart: always
     environment:
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: teste_postgre
-      TZ: 'GMT-3'
-      PGTZ: 'GMT-3'
+      - POSTGRES_PASSWORD= ${POSTGRES_PASSWORD}
+      - POSTGRES_DB= 'smartsheet_rpa'
+      - TZ= 'GMT-3'
+      - PGTZ= 'GMT-3'
     ports:
       - 5432:5432
