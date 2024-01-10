@@ -1,14 +1,10 @@
-version: "3.1"
-
 services:
-
   db:
-    image: postgres:14.2-alpine
+    image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_PASSWORD= ${POSTGRES_PASSWORD}
-      - POSTGRES_DB= 'smartsheet_rpa'
-      - TZ= 'GMT-3'
-      - PGTZ= 'GMT-3'
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - TZ=GMT-3
+      - PGTZ=GMT-3
     ports:
       - 5432:5432
