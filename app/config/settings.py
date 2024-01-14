@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     TASK_TYPE: str
     AUXILIARY_COLUMN: str | None
     REFERENCE_VALUES: str
+    POSTGRES_PASSWORD: str | int
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8")
